@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For V ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Bangers&family=Comic+Neue:wght@400;700&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:#030314;color:white;font-family:'Raleway',sans-serif;overflow:hidden;width:100vw;height:100vh;}
+
+  #start-screen{
+    position:fixed;inset:0;background:#030314;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    cursor:pointer;z-index:200;transition:opacity 1.4s ease;
+  }
+  #start-pulse{
+    width:90px;height:90px;border-radius:50%;
+    border:2px solid rgba(240,208,128,0.5);
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:2rem;position:relative;
+    animation:ringPulse 2.5s ease-in-out infinite;
+  }
+  #start-pulse::before{
+    content:'';position:absolute;inset:-12px;border-radius:50%;
+    border:1px solid rgba(240,208,128,0.2);
+    animation:ringPulse 2.5s ease-in-out infinite 0.4s;
+  }
+  #start-pulse svg{width:36px;height:36px;fill:#f0d080;}
+  #start-screen h1{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(1.1rem,3vw,1.8rem);
+    color:#f0d080;margin-bottom:0.8rem;letter-spacing:0.08em;
+    animation:fadeUpIn 1s ease forwards;
+  }
+  #start-screen p{color:rgba(255,255,255,0.35);font-size:0.8rem;letter-spacing:0.15em;}
+  @keyframes ringPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.12);opacity:0.6}}
+  @keyframes fadeUpIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+  .scene{position:fixed;inset:0;opacity:0;transition:opacity 1.8s ease;pointer-events:none;}
+  .scene.active{opacity:1;pointer-events:all;}
+
+  /* SCENE 1 — CONSTELLATION */
+  #scene1{background:#030314;}
+  #c1{width:100%;height:100%;display:block;}
+  #s1text{position:absolute;bottom:11%;width:100%;text-align:center;pointer-events:none;}
+  #s1date{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(0.9rem,2.5vw,1.35rem);
+    color:#f0d080;opacity:0;transition:opacity 3s ease;
+    letter-spacing:0.4em;text-shadow:0 0 30px rgba(240,208,128,0.5);
+  }
+  #s1sub{
+    display:none;
+  }
+
+  /* SCENE 2 — COMIC */
+  #scene2{background:#f0ebe0;display:flex;align-items:center;justify-content:center;padding:1.2rem;}
+  #comic-grid{
+    display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;
+    gap:7px;width:min(96vw,920px);height:min(91vh,700px);
+  }
+  /* No slide-in — panels appear as one complete page with the scene fade */
+  .cp{
+    border:3.5px solid #111;background:white;
+    position:relative;overflow:hidden;border-radius:3px;
+  }
+  .cp svg{width:100%;height:100%;display:block;}
+  .cap{
+    position:absolute;bottom:0;left:0;right:0;
+    background:white;border-top:2.5px solid #111;
+    padding:3px 8px;font-family:'Comic Neue',cursive;
+    font-size:clamp(0.5rem,1.15vw,0.72rem);color:#111;line-height:1.3;
+  }
+
+  /* SCENE 3 — WARM TEXT */
+  #scene3{background:#030314;display:flex;align-items:center;justify-content:center;padding:2rem;}
+  #c3{position:absolute;inset:0;width:100%;height:100%;z-index:1;}
+  #warm-words{position:relative;z-index:10;text-align:center;}
+  .wl{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(1.15rem,3.5vw,2.1rem);
+    color:#f0d080;opacity:0;
+    transform:translateY(28px) scale(0.96);
+    transition:opacity 2s ease,transform 2s cubic-bezier(.22,1,.36,1);
+    margin:0.5rem 0;line-height:1.65;
+  }
+  .wl.sub {color:rgba(255,255,255,0.82);font-size:clamp(1rem,2.8vw,1.6rem);}
+  .wl.tiny{color:rgba(255,255,255,0.45);font-style:italic;font-size:clamp(0.8rem,1.8vw,1.05rem);}
+  .wl.gold2{color:rgba(240,208,128,0.82);font-size:clamp(0.85rem,1.9vw,1.1rem);margin-top:1.4rem;}
+  .wl.on{opacity:1;transform:translateY(0) scale(1);}
+
+  /* SCENE 4 — BIRTHDAY */
+  #scene4{background:#030314;display:flex;align-items:center;justify-content:center;}
+  #c4{position:absolute;inset:0;width:100%;height:100%;display:block;}
+  #bday{position:relative;z-index:10;text-align:center;padding:1rem;}
+  #bmain{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(2rem,7.5vw,5.5rem);color:#f0d080;
+    opacity:0;transform:scale(0.7) translateY(20px);
+    transition:opacity 2s ease,transform 2s cubic-bezier(.34,1.56,.64,1);
+    text-shadow:0 0 60px rgba(240,208,128,0.5),0 0 120px rgba(240,208,128,0.2);
+    line-height:1.2;
+  }
+  #bsub{
+    font-size:clamp(0.6rem,1.7vw,0.9rem);color:rgba(255,255,255,0.45);
+    margin-top:1rem;letter-spacing:0.3em;opacity:0;transition:opacity 2s ease 0.7s;
+  }
+  #bfrom{
+    font-family:'Playfair Display',serif;font-style:italic;
+    font-size:clamp(0.85rem,2vw,1.15rem);color:rgba(240,208,128,0.62);
+    margin-top:2.5rem;opacity:0;transition:opacity 2s ease 1.4s;
+  }
+</style>
+</head>
+<body>
+
+<!-- START SCREEN -->
+<div id="start-screen">
+  <div id="start-pulse">
+    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+  </div>
+  <h1>click anywhere to begin</h1>
+  <p>best with headphones &nbsp;🎧</p>
+</div>
+
+<!--
+  ============================================================
+  🎤 AUDIO — drop your MP3 file into this folder
+     then make sure the filename below matches exactly
+  ============================================================
+-->
+<audio id="vo" preload="auto">
+  <source src="voiceover.m4a" type="audio/mp4">
+  <!-- ☝️ Change "voiceover.m4a" to match your filename -->
+</audio>
+
+<!-- SCENE 1 : CONSTELLATION -->
+<div id="scene1" class="scene">
+  <canvas id="c1"></canvas>
+  <div id="s1text">
+    <div id="s1date">MAY 5, 2006</div>
+    <div id="s1sub">♉ TAURUS &nbsp;·&nbsp; THE SKY ON THE NIGHT YOU WERE BORN</div>
+  </div>
+</div>
+
+<!-- SCENE 2 : COMIC PANELS -->
+<div id="scene2" class="scene">
+  <div id="comic-grid">
+
+    <!-- PANEL 1 — classroom establishing shot -->
+    <div class="cp" id="p1">
+      <svg viewBox="0 0 320 210" xmlns="http://www.w3.org/2000/svg">
+        <rect width="320" height="210" fill="#f5f0e5"/>
+        <!-- window daylight -->
+        <rect x="222" y="10" width="88" height="68" fill="#d4eeff" stroke="#bbb" stroke-width="1.5" rx="2"/>
+        <line x1="266" y1="10" x2="266" y2="78" stroke="#bbb" stroke-width="1.5"/>
+        <line x1="222" y1="44" x2="310" y2="44" stroke="#bbb" stroke-width="1.5"/>
+        <!-- blackboard -->
+        <rect x="10" y="8" width="185" height="65" fill="#2d5a1b" rx="3"/>
+        <rect x="14" y="12" width="177" height="57" fill="#326b20" rx="2"/>
+        <text x="102" y="44" text-anchor="middle" fill="#8ecfa0" font-family="serif" font-size="12" font-style="italic">Social Studies</text>
+        <line x1="20" y1="58" x2="184" y2="58" stroke="#4a8a55" stroke-width="0.7"/>
+        <!-- floor -->
+        <line x1="0" y1="168" x2="320" y2="168" stroke="#c8b898" stroke-width="1.5"/>
+        <!-- desk A -->
+        <rect x="14" y="146" width="88" height="8" fill="#a07820" rx="2"/>
+        <rect x="26" y="154" width="6" height="32" fill="#7a5a10"/>
+        <rect x="58" y="154" width="6" height="32" fill="#7a5a10"/>
+        <!-- desk V -->
+        <rect x="186" y="146" width="88" height="8" fill="#a07820" rx="2"/>
+        <rect x="198" y="154" width="6" height="32" fill="#7a5a10"/>
+        <rect x="230" y="154" width="6" height="32" fill="#7a5a10"/>
+        <!-- CHARACTER A -->
+        <ellipse cx="58" cy="107" rx="16" ry="10" fill="#1a0800"/>
+        <ellipse cx="58" cy="120" rx="15" ry="18" fill="#f4c89a"/>
+        <!-- eyes flat/bored -->
+        <line x1="50" y1="117" x2="56" y2="117" stroke="#444" stroke-width="2" stroke-linecap="round"/>
+        <line x1="60" y1="117" x2="66" y2="117" stroke="#444" stroke-width="2" stroke-linecap="round"/>
+        <!-- eyebrows -->
+        <path d="M 49 112 Q 56 110 63 112" stroke="#1a0800" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M 60 112 Q 67 110 74 112" stroke="#1a0800" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <!-- nose hint -->
+        <path d="M 58 120 L 56 127 Q 58 129 60 127 L 58 120" fill="rgba(0,0,0,0.07)"/>
+        <!-- flat mouth -->
+        <path d="M 52 131 Q 58 129 64 131" stroke="#a06040" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <!-- neck + shirt -->
+        <rect x="52" y="137" width="11" height="9" fill="#e0a870"/>
+        <path d="M 36 165 L 44 138 L 72 138 L 80 165 Z" fill="#3a5a8a"/>
+        <path d="M 52 138 L 58 144 L 64 138" stroke="#4a6a9a" stroke-width="1" fill="none"/>
+        <text x="58" y="132" text-anchor="middle" fill="#333" font-family="Arial" font-weight="bold" font-size="8">A</text>
+        <!-- CHARACTER V -->
+        <ellipse cx="230" cy="106" rx="18" ry="12" fill="#0a0400"/>
+        <rect x="213" y="106" width="8" height="26" fill="#0a0400"/>
+        <rect x="241" y="106" width="8" height="26" fill="#0a0400"/>
+        <!-- loose strand -->
+        <path d="M 213 114 Q 204 124 206 136" stroke="#0a0400" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <ellipse cx="230" cy="119" rx="15" ry="18" fill="#f4c89a"/>
+        <!-- eyes with shine -->
+        <ellipse cx="223" cy="115" rx="5" ry="5.5" fill="white"/>
+        <circle cx="223" cy="115" r="3.5" fill="#1a0a00"/>
+        <circle cx="223" cy="115" r="2" fill="#111"/>
+        <circle cx="224.5" cy="114" r="1.2" fill="white"/>
+        <ellipse cx="237" cy="115" rx="5" ry="5.5" fill="white"/>
+        <circle cx="237" cy="115" r="3.5" fill="#1a0a00"/>
+        <circle cx="237" cy="115" r="2" fill="#111"/>
+        <circle cx="238.5" cy="114" r="1.2" fill="white"/>
+        <!-- eyebrows -->
+        <path d="M 218 109 Q 223 106 229 108" stroke="#0a0400" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <path d="M 231 108 Q 237 106 243 109" stroke="#0a0400" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <!-- nose -->
+        <path d="M 230 119 L 228 126 Q 230 128 232 126 L 230 119" fill="rgba(0,0,0,0.08)"/>
+        <!-- gentle smile -->
+        <path d="M 224 130 Q 230 134 236 130 Q 234 134 230 135 Q 226 134 224 130" fill="#c06050"/>
+        <!-- neck + shirt -->
+        <rect x="224" y="136" width="11" height="9" fill="#e0a870"/>
+        <path d="M 210 165 L 218 138 L 244 138 L 252 165 Z" fill="#b03020"/>
+        <path d="M 224 138 L 230 144 L 236 138" stroke="#c04030" stroke-width="1" fill="none"/>
+        <text x="230" y="132" text-anchor="middle" fill="#333" font-family="Arial" font-weight="bold" font-size="8">V</text>
+        <!-- sleeping student bg -->
+        <ellipse cx="152" cy="132" rx="10" ry="7" fill="#d4a870"/>
+        <text x="166" y="122" fill="#aaa" font-family="serif" font-size="9" font-style="italic">z z z</text>
+      </svg>
+      <div class="cap">Another quiet Social Studies class. Or so Ashish thought.</div>
+    </div>
+
+    <!-- PANEL 2 — V begins the performance -->
+    <div class="cp" id="p2">
+      <svg viewBox="0 0 320 210" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="p2burst" cx="33%" cy="52%" r="55%">
+            <stop offset="0%" stop-color="#fff3cc"/>
+            <stop offset="100%" stop-color="#fff8f0"/>
+          </radialGradient>
+        </defs>
+        <rect width="320" height="210" fill="url(#p2burst)"/>
+        <!-- energy lines -->
+        <line x1="105" y1="110" x2="0"  y2="10"  stroke="#ffcc44" stroke-width="1.2" opacity="0.55"/>
+        <line x1="105" y1="110" x2="0"  y2="75"  stroke="#ffcc44" stroke-width="1"   opacity="0.45"/>
+        <line x1="105" y1="110" x2="0"  y2="140" stroke="#ffcc44" stroke-width="1"   opacity="0.45"/>
+        <line x1="105" y1="110" x2="20" y2="210" stroke="#ffcc44" stroke-width="1"   opacity="0.4"/>
+        <!-- V bust, expressive -->
+        <ellipse cx="105" cy="86" rx="30" ry="20" fill="#0a0400"/>
+        <rect x="77"  y="86" width="11" height="42" fill="#0a0400"/>
+        <rect x="122" y="86" width="11" height="40" fill="#0a0400"/>
+        <path d="M 77 94 Q 60 106 62 124" stroke="#0a0400" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path d="M 133 94 Q 148 108 146 128" stroke="#0a0400" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <!-- face -->
+        <ellipse cx="105" cy="106" rx="30" ry="35" fill="#f4c89a"/>
+        <!-- eyes WIDE -->
+        <ellipse cx="94"  cy="99" rx="6.5" ry="7.5" fill="white"/>
+        <circle  cx="94"  cy="99" r="4.5" fill="#1a0a00"/>
+        <circle  cx="94"  cy="99" r="2.5" fill="#111"/>
+        <circle  cx="95.5" cy="97.5" r="1.5" fill="white"/>
+        <ellipse cx="116" cy="99" rx="6.5" ry="7.5" fill="white"/>
+        <circle  cx="116" cy="99" r="4.5" fill="#1a0a00"/>
+        <circle  cx="116" cy="99" r="2.5" fill="#111"/>
+        <circle  cx="117.5" cy="97.5" r="1.5" fill="white"/>
+        <!-- eyebrows raised high -->
+        <path d="M 86 89 Q 94 84 102 87"  stroke="#0a0400" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <path d="M 108 87 Q 116 84 125 89" stroke="#0a0400" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <!-- nose -->
+        <path d="M 105 104 L 102 114 Q 105 116 108 114 L 105 104" fill="rgba(0,0,0,0.08)"/>
+        <!-- mouth wide open -->
+        <path d="M 90 124 Q 105 117 120 124 Q 114 134 105 136 Q 96 134 90 124" fill="#b03020"/>
+        <path d="M 93 124 Q 105 129 117 124" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" fill="none"/>
+        <!-- neck + body -->
+        <rect x="96" y="140" width="18" height="14" fill="#e0a870" rx="1"/>
+        <path d="M 65 210 L 76 152 L 134 152 L 144 210 Z" fill="#b03020"/>
+        <path d="M 96 152 L 105 162 L 114 152" stroke="#c04030" stroke-width="1.5" fill="none"/>
+        <!-- arms gesturing out -->
+        <line x1="76"  y1="162" x2="42"  y2="136" stroke="#f4c89a" stroke-width="10" stroke-linecap="round"/>
+        <line x1="134" y1="162" x2="168" y2="136" stroke="#f4c89a" stroke-width="10" stroke-linecap="round"/>
+        <!-- exclamation sparks -->
+        <text x="52"  y="78" fill="#f0c000" font-size="20" font-weight="bold">!</text>
+        <text x="70"  y="62" fill="#f0c000" font-size="14">✦</text>
+        <text x="87"  y="57" fill="#f0c000" font-size="11">★</text>
+        <!-- speech bubble -->
+        <rect x="148" y="10" width="164" height="108" fill="white" stroke="#111" stroke-width="2.5" rx="14"/>
+        <polygon points="162,118 148,142 176,126" fill="white" stroke="#111" stroke-width="2" stroke-linejoin="round"/>
+        <polygon points="164,116 150,138 174,124" fill="white"/>
+        <text x="230" y="38"  text-anchor="middle" fill="#b03020" font-family="'Comic Neue',cursive" font-weight="bold" font-size="12">"OK so there's this</text>
+        <text x="230" y="55"  text-anchor="middle" fill="#111"    font-family="'Comic Neue',cursive" font-size="11">movie called Diya</text>
+        <text x="230" y="72"  text-anchor="middle" fill="#111"    font-family="'Comic Neue',cursive" font-size="11">and I am going to</text>
+        <text x="230" y="89"  text-anchor="middle" fill="#b03020" font-family="'Comic Neue',cursive" font-weight="bold" font-size="12">narrate the WHOLE</text>
+        <text x="230" y="107" text-anchor="middle" fill="#b03020" font-family="'Comic Neue',cursive" font-weight="bold" font-size="12">thing. right. now."</text>
+      </svg>
+      <div class="cap">Varshini: "I'm going to narrate Diya right now."</div>
+    </div>
+
+    <!-- PANEL 3 — A listening, chin on hand -->
+    <div class="cp" id="p3">
+      <svg viewBox="0 0 320 210" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="p3bg" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stop-color="#e8f0ff"/>
+            <stop offset="100%" stop-color="#dce8ff"/>
+          </radialGradient>
+        </defs>
+        <rect width="320" height="210" fill="url(#p3bg)"/>
+        <!-- A large bust close-up -->
+        <ellipse cx="138" cy="64" rx="36" ry="22" fill="#1a0800"/>
+        <rect x="104" y="64" width="13" height="22" fill="#1a0800"/>
+        <rect x="149" y="64" width="11" height="18" fill="#1a0800"/>
+        <!-- face -->
+        <ellipse cx="138" cy="108" rx="36" ry="42" fill="#f4c89a"/>
+        <!-- eyes half-lidded, relaxed -->
+        <ellipse cx="124" cy="100" rx="7" ry="5.5" fill="white"/>
+        <circle  cx="124" cy="100" r="4"   fill="#1a0800"/>
+        <circle  cx="124" cy="100" r="2.2" fill="#111"/>
+        <circle  cx="125.5" cy="99" r="1.2" fill="white"/>
+        <!-- soft upper lid -->
+        <path d="M 117 100 Q 124 93 131 100" stroke="#1a0800" stroke-width="1.8" fill="rgba(26,8,0,0.35)"/>
+        <ellipse cx="152" cy="100" rx="7" ry="5.5" fill="white"/>
+        <circle  cx="152" cy="100" r="4"   fill="#1a0800"/>
+        <circle  cx="152" cy="100" r="2.2" fill="#111"/>
+        <circle  cx="153.5" cy="99" r="1.2" fill="white"/>
+        <path d="M 145 100 Q 152 93 159 100" stroke="#1a0800" stroke-width="1.8" fill="rgba(26,8,0,0.35)"/>
+        <!-- eyebrows relaxed -->
+        <path d="M 116 93 Q 124 89 132 92" stroke="#1a0800" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M 144 92 Q 152 89 160 93" stroke="#1a0800" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <!-- nose -->
+        <path d="M 138 106 L 135 116 Q 138 118 141 116 L 138 106" fill="rgba(0,0,0,0.08)"/>
+        <ellipse cx="133" cy="117" rx="4" ry="2.5" fill="rgba(0,0,0,0.07)"/>
+        <ellipse cx="143" cy="117" rx="4" ry="2.5" fill="rgba(0,0,0,0.07)"/>
+        <!-- warm smile -->
+        <path d="M 126 130 Q 138 142 150 130 Q 146 138 138 140 Q 130 138 126 130" fill="#c06050"/>
+        <!-- chin resting on fist -->
+        <ellipse cx="138" cy="156" rx="22" ry="14" fill="#f4c89a"/>
+        <line x1="124" y1="155" x2="124" y2="163" stroke="rgba(0,0,0,0.15)" stroke-width="1.2"/>
+        <line x1="131" y1="154" x2="131" y2="163" stroke="rgba(0,0,0,0.15)" stroke-width="1.2"/>
+        <line x1="138" y1="154" x2="138" y2="163" stroke="rgba(0,0,0,0.15)" stroke-width="1.2"/>
+        <path d="M 72 210 L 100 170 L 176 170 L 204 210 Z" fill="#3a5a8a"/>
+        <!-- thought bubble -->
+        <circle cx="192" cy="58" r="4.5" fill="white" stroke="#ccc" stroke-width="1.5"/>
+        <circle cx="210" cy="44" r="7"   fill="white" stroke="#ccc" stroke-width="1.5"/>
+        <rect x="218" y="10" width="96" height="58" fill="white" stroke="#ccc" stroke-width="1.5" rx="12"/>
+        <text x="266" y="28"  text-anchor="middle" fill="#999" font-family="'Comic Neue',cursive" font-size="8.5">she's been talking</text>
+        <text x="266" y="42"  text-anchor="middle" fill="#999" font-family="'Comic Neue',cursive" font-size="8.5">for 45 minutes...</text>
+        <text x="266" y="58"  text-anchor="middle" fill="#3a5a8a" font-family="'Comic Neue',cursive" font-weight="bold" font-size="9.5">please don't stop.</text>
+        <!-- soft hearts -->
+        <text x="202" y="134" fill="rgba(180,80,80,0.25)" font-size="15">&#9825;</text>
+        <text x="240" y="112" fill="rgba(180,80,80,0.18)" font-size="10">&#9825;</text>
+      </svg>
+      <div class="cap">Ashish: *has not moved. has not blinked. fully invested.*</div>
+    </div>
+
+    <!-- PANEL 4 — 80 minutes later, V at peak energy -->
+    <div class="cp" id="p4">
+      <svg viewBox="0 0 320 210" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="p4burst" cx="32%" cy="52%" r="60%">
+            <stop offset="0%" stop-color="#ffe8e0"/>
+            <stop offset="100%" stop-color="#fff4f0"/>
+          </radialGradient>
+        </defs>
+        <rect width="320" height="210" fill="url(#p4burst)"/>
+        <!-- energy lines warm red -->
+        <line x1="96" y1="104" x2="0"   y2="8"   stroke="#ff8060" stroke-width="1.2" opacity="0.45"/>
+        <line x1="96" y1="104" x2="0"   y2="60"  stroke="#ff8060" stroke-width="1"   opacity="0.4"/>
+        <line x1="96" y1="104" x2="0"   y2="115" stroke="#ff8060" stroke-width="1"   opacity="0.4"/>
+        <line x1="96" y1="104" x2="0"   y2="170" stroke="#ff8060" stroke-width="1"   opacity="0.35"/>
+        <line x1="96" y1="104" x2="28"  y2="210" stroke="#ff8060" stroke-width="1"   opacity="0.35"/>
+        <!-- 80 MINUTES stamp -->
+        <rect x="172" y="6" width="142" height="44" fill="#b03020" rx="22"/>
+        <text x="243" y="23" text-anchor="middle" fill="white" font-family="'Bangers',cursive" font-size="13" letter-spacing="1">80 MINUTES</text>
+        <text x="243" y="39" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-family="'Comic Neue',cursive" font-size="9">L A T E R  . . .</text>
+        <!-- V wild hair -->
+        <ellipse cx="96" cy="70" rx="38" ry="25" fill="#0a0400"/>
+        <rect x="59"  y="70" width="14" height="90" fill="#0a0400"/>
+        <rect x="120" y="70" width="12" height="84" fill="#0a0400"/>
+        <path d="M 59 80 Q 36 90 32 76 Q 28 64 40 60" stroke="#0a0400" stroke-width="8" fill="none" stroke-linecap="round"/>
+        <path d="M 132 82 Q 150 74 154 62" stroke="#0a0400" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <!-- face -->
+        <ellipse cx="96" cy="110" rx="36" ry="42" fill="#f4c89a"/>
+        <!-- STAR EYES -->
+        <ellipse cx="82"  cy="103" rx="8" ry="7" fill="white"/>
+        <path d="M 82 96 L 83 101 L 88 99 L 84 103 L 89 107 L 83 104 L 82 110 L 81 104 L 75 107 L 80 103 L 76 99 L 81 101 Z" fill="#f0c010"/>
+        <ellipse cx="110" cy="103" rx="8" ry="7" fill="white"/>
+        <path d="M 110 96 L 111 101 L 116 99 L 112 103 L 117 107 L 111 104 L 110 110 L 109 104 L 103 107 L 108 103 L 104 99 L 109 101 Z" fill="#f0c010"/>
+        <!-- eyebrows sky high -->
+        <path d="M 72 93 Q 82 87 94 91"  stroke="#0a0400" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <path d="M 98 91 Q 110 87 122 93" stroke="#0a0400" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <!-- nose -->
+        <path d="M 96 110 L 93 120 Q 96 122 99 120 L 96 110" fill="rgba(0,0,0,0.08)"/>
+        <!-- mouth WIDE open THE END -->
+        <path d="M 78 132 Q 96 124 114 132 Q 108 146 96 148 Q 84 146 78 132" fill="#b03020"/>
+        <path d="M 81 132 Q 96 138 111 132" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" fill="none"/>
+        <!-- neck + body -->
+        <rect x="86" y="151" width="19" height="14" fill="#e0a870" rx="1"/>
+        <path d="M 52 210 L 64 158 L 128 158 L 138 210 Z" fill="#b03020"/>
+        <path d="M 86 158 L 96 167 L 106 158" stroke="#c04030" stroke-width="1.5" fill="none"/>
+        <!-- arms FULLY OUT -->
+        <line x1="64"  y1="168" x2="22"  y2="132" stroke="#f4c89a" stroke-width="11" stroke-linecap="round"/>
+        <line x1="128" y1="168" x2="170" y2="132" stroke="#f4c89a" stroke-width="11" stroke-linecap="round"/>
+        <!-- speech bubble -->
+        <rect x="148" y="58" width="166" height="130" fill="white" stroke="#111" stroke-width="2.5" rx="14"/>
+        <polygon points="162,188 148,210 178,198" fill="white" stroke="#111" stroke-width="2" stroke-linejoin="round"/>
+        <polygon points="164,186 150,206 176,196" fill="white"/>
+        <text x="231" y="80"  text-anchor="middle" fill="#b03020" font-family="'Comic Neue',cursive" font-weight="bold" font-size="11">"AND THEN—"</text>
+        <text x="231" y="97"  text-anchor="middle" fill="#111"    font-family="'Comic Neue',cursive" font-size="10">"wait WAIT—"</text>
+        <text x="231" y="113" text-anchor="middle" fill="#111"    font-family="'Comic Neue',cursive" font-size="10">"this part is SO</text>
+        <text x="231" y="127" text-anchor="middle" fill="#111"    font-family="'Comic Neue',cursive" font-size="10">important—"</text>
+        <line x1="154" y1="138" x2="306" y2="138" stroke="#ddd" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="231" y="162" text-anchor="middle" fill="#b03020" font-family="'Bangers',cursive" font-size="24" letter-spacing="2">THE END.</text>
+        <text x="231" y="178" text-anchor="middle" fill="#888"    font-family="'Comic Neue',cursive" font-size="8.5">*takes a dramatic bow*</text>
+      </svg>
+      <div class="cap">80 minutes. Every scene. Every line. Standing ovation. 🎬</div>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 3 : WARM TEXT -->
+<div id="scene3" class="scene">
+  <canvas id="c3"></canvas>
+  <div id="warm-words">
+    <div class="wl"       id="w1">I'm really glad I got to know you.</div>
+    <div class="wl sub"   id="w2">I'm glad you exist.</div>
+    <div class="wl tiny"  id="w3">Genuinely.</div>
+    <div class="wl gold2" id="w4">The world is a little more interesting with you in it.</div>
+  </div>
+</div>
+
+<!-- SCENE 4 : BIRTHDAY -->
+<div id="scene4" class="scene">
+  <canvas id="c4"></canvas>
+  <div id="bday">
+    <div id="bmain">Happy Birthday, Varshini ✨</div>
+    <div id="bsub">MAY 5 &nbsp;·&nbsp; ♉ TAURUS &nbsp;·&nbsp; STAR CHILD</div>
+    <div id="bfrom">— Ashish</div>
+  </div>
+</div>
+
+
+<script>
+// ╔════════════════════════════════════════════════════════════╗
+// ║                                                            ║
+// ║   ✏️  ALL YOUR SETTINGS LIVE HERE — ONLY EDIT THIS BLOCK  ║
+// ║                                                            ║
+// ╚════════════════════════════════════════════════════════════╝
+
+const CONFIG = {
+
+  // ─────────────────────────────────────────────
+  // 🎤 AUDIO
+  //    Put your MP3 in this folder, rename it,
+  //    then update the filename below to match.
+  // ─────────────────────────────────────────────
+  voiceoverFile: 'voiceover.m4a',
+
+
+  // ─────────────────────────────────────────────
+  // ⏱️  TIMINGS  (milliseconds — 1000ms = 1 sec)
+  //
+  //    HOW TO SYNC TO YOUR VOICE:
+  //    1. Record your voiceover
+  //    2. Play it back and note timestamps
+  //       e.g. "I say the Diya line at 0:19"
+  //       → set comicStart: 19000
+  //    3. Save the file and refresh the browser
+  // ─────────────────────────────────────────────
+  timings: {
+    constellationStart : 0,      // Scene 1 starts immediately on click
+    dateTextAppears    : 3800,   // "May 5, 2006" fades in
+
+    comicStart         : 18000,  // Comic scene fades in
+    panel1             : 19200,  // Panel 1 slides in  ← "A regular Social Studies class"
+    panel2             : 24000,  // Panel 2 slides in  ← V starts narrating
+    panel3             : 29500,  // Panel 3 slides in  ← A listening
+    panel4             : 36000,  // Panel 4 slides in  ← 80 MINUTES LATER
+
+    warmTextStart      : 57000,  // Warm scene fades in
+    warmLine1          : 59200,  // "I'm really glad I got to know you"
+    warmLine2          : 62500,  // "I'm glad you exist"
+    warmLine3          : 65500,  // "Genuinely"
+    warmLine4          : 68200,  // "The world is a little more interesting..."
+
+    birthdayStart      : 72000,  // Birthday scene fades in
+    birthdayText       : 73800,  // "Happy Birthday V" appears
+  },
+
+
+  // ─────────────────────────────────────────────
+  // 🎨 COLORS
+  //    Use any hex color — google "hex color picker"
+  //    to find the color you want
+  // ─────────────────────────────────────────────
+  colors: {
+    starGold      : '#f0d080',   // Stars, constellation lines, warm text
+    skyNear       : '#0c0c32',   // Sky color near center
+    skyFar        : '#020208',   // Sky color at edges
+    nebulaRGB     : '80,60,160', // Nebula glow color (R,G,B values)
+    warmTextMain  : '#f0d080',   // Main warm text color
+    birthdayGlow  : '#f0d080',   // Birthday text glow color
+  },
+
+
+  // ─────────────────────────────────────────────
+  // ⚡ ANIMATION SPEED & STYLE
+  //
+  //    shootingStarFrequency:
+  //      How often shooting stars appear (in frames)
+  //      LOWER = more frequent  |  HIGHER = rarer
+  //      Try: 60 (lots) | 120 (normal) | 200 (rare)
+  //
+  //    constellationBuildFrames:
+  //      How long the constellation takes to draw
+  //      LOWER = faster  |  HIGHER = slower
+  //      Try: 150 (fast) | 300 (normal) | 500 (very slow)
+  //
+  //    zoomAmount:
+  //      How much the constellation zooms in over time
+  //      1.0 = no zoom | 1.08 = subtle | 1.20 = dramatic
+  //
+  //    auroraSpeed:
+  //      Speed of the aurora waves in the warm text scene
+  //      Try: 0.004 (slow) | 0.008 (normal) | 0.016 (fast)
+  //
+  //    fireworkInterval:
+  //      Frames between each firework burst
+  //      LOWER = faster/more  |  HIGHER = slower/fewer
+  //      Try: 30 (rapid) | 55 (normal) | 90 (slow)
+  //
+  //    fireworkCount:
+  //      Total number of firework bursts in scene 4
+  //      Try: 3 (minimal) | 6 (normal) | 10 (chaos)
+  // ─────────────────────────────────────────────
+  animation: {
+    shootingStarFrequency    : 120,
+    constellationBuildFrames : 150,
+    zoomAmount               : 1.08,
+    auroraSpeed              : 0.008,
+    fireworkInterval         : 55,
+    fireworkCount            : 6,
+  },
+
+
+  // ─────────────────────────────────────────────
+  // ✏️  TEXT — change any words here
+  // ─────────────────────────────────────────────
+  text: {
+    date          : 'MAY 5, 2006',
+    //subtitle      : '♉ TAURUS · THE SKY WHEN YOU WERE BORN',
+    warmLine1     : "I'm really glad I got to know you.",
+    warmLine2     : "I'm glad you exist.",
+    warmLine3     : 'Genuinely.',
+    warmLine4     : 'The world is a little more interesting with you in it.',
+    birthdayMain  : 'Happy Birthday, Varshini ✨',
+    //birthdaySub   : 'MAY 5 · ♉ TAURUS · STAR CHILD',
+    birthdayFrom  : '— Ashish',
+  },
+
+};
+
+// ╔════════════════════════════════════════════════════════════╗
+// ║  STOP HERE — you don't need to touch anything below this  ║
+// ╚════════════════════════════════════════════════════════════╝
+
+
+// Apply CONFIG text to DOM
+document.getElementById('s1date').textContent  = CONFIG.text.date;
+document.getElementById('s1sub').textContent   = CONFIG.text.subtitle;
+document.getElementById('w1').textContent      = CONFIG.text.warmLine1;
+document.getElementById('w2').textContent      = CONFIG.text.warmLine2;
+document.getElementById('w3').textContent      = CONFIG.text.warmLine3;
+document.getElementById('w4').textContent      = CONFIG.text.warmLine4;
+document.getElementById('bmain').textContent   = CONFIG.text.birthdayMain;
+document.getElementById('bsub').textContent    = CONFIG.text.birthdaySub;
+document.getElementById('bfrom').textContent   = CONFIG.text.birthdayFrom;
+
+// Apply audio source
+document.querySelector('#vo source').src = CONFIG.voiceoverFile;
+
+// Apply color to CSS vars
+document.documentElement.style.setProperty('--gold', CONFIG.colors.starGold);
+
+// ── BOOT ──────────────────────────────────────────────────────
+let started = false;
+document.getElementById('start-screen').addEventListener('click', boot);
+
+function boot() {
+  if (started) return; started = true;
+  const el = document.documentElement;
+  (el.requestFullscreen || el.webkitRequestFullscreen || function(){}).call(el);
+  const ss = document.getElementById('start-screen');
+  ss.style.opacity = '0';
+  setTimeout(() => ss.style.display = 'none', 1400);
+  document.getElementById('vo').play().catch(() => {});
+  schedule();
+}
+
+function show(id) {
+  document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function on(id) { const e = document.getElementById(id); if (e) e.classList.add('on'); }
+function fadeIn(id) {
+  const e = document.getElementById(id);
+  if (e) e.style.opacity = '1';
+}
+
+function schedule() {
+  const t = CONFIG.timings;
+  setTimeout(() => { show('scene1'); initC1(); },         t.constellationStart);
+  setTimeout(() => { fadeIn('s1date'); }, t.dateTextAppears);
+
+  setTimeout(() => show('scene2'),   t.comicStart);
+  // panels appear as one complete page — no per-panel animation needed
+
+  setTimeout(() => { show('scene3'); initC3(); }, t.warmTextStart);
+  setTimeout(() => on('w1'), t.warmLine1);
+  setTimeout(() => on('w2'), t.warmLine2);
+  setTimeout(() => on('w3'), t.warmLine3);
+  setTimeout(() => on('w4'), t.warmLine4);
+
+  setTimeout(() => { show('scene4'); initC4(); }, t.birthdayStart);
+  setTimeout(() => {
+    const bm = document.getElementById('bmain');
+    bm.style.opacity = '1';
+    bm.style.transform = 'scale(1) translateY(0)';
+    fadeIn('bsub');
+    fadeIn('bfrom');
+  }, t.birthdayText);
+}
+
+// ── SCENE 1 : CONSTELLATION + SHOOTING STARS ──────────────────
+function initC1() {
+  const cv = document.getElementById('c1'), ctx = cv.getContext('2d');
+  fit(cv); const W = cv.width, H = cv.height;
+
+  const bg = Array.from({ length: 240 }, () => ({
+    x: R(W), y: R(H), r: R(1.5) + 0.2,
+    a: R(0.55) + 0.12, sp: R(0.025) + 0.005, ph: R(Math.PI * 2)
+  }));
+
+  const raw = [
+    { n: 'Aldebaran', x: 0,    y: 0,    m: 3.2 },
+    { n: 'Ain',       x: -30,  y: -42,  m: 2   },
+    { n: 'Hyadum',    x: -45,  y: 26,   m: 1.9 },
+    { n: 'Theta',     x: 28,   y: 40,   m: 1.7 },
+    { n: 'Delta',     x: 22,   y: 20,   m: 1.6 },
+    { n: 'Elnath',    x: -100, y: -112, m: 2.4 },
+    { n: 'Horn',      x: -72,  y: -55,  m: 1.5 },
+    { n: 'Alcyone',   x: 100,  y: -55,  m: 2.1 },
+    { n: 'Atlas',     x: 116,  y: -43,  m: 1.4 },
+    { n: 'Merope',    x: 106,  y: -30,  m: 1.3 },
+    { n: 'Maia',      x: 93,   y: -68,  m: 1.3 },
+    { n: 'Electra',   x: 82,   y: -46,  m: 1.3 },
+    { n: 'Pleione',   x: 124,  y: -62,  m: 1.1 },
+  ];
+  const edges = [
+    [0,1],[1,2],[2,3],[3,0],[0,4],
+    [0,6],[6,5],[1,5],
+    [7,8],[7,9],[7,10],[7,11],[7,12],[1,7]
+  ];
+
+  const sc = Math.min(W, H) * 0.0038, cx = W * 0.5, cy = H * 0.46;
+  const stars = raw.map(s => ({ ...s, cx: cx + s.x * sc, cy: cy + s.y * sc }));
+
+  let shoots = [], shootTimer = 0, frame = 0, zoom = 1;
+  const BUILD = CONFIG.animation.constellationBuildFrames;
+  const TARGET_ZOOM = CONFIG.animation.zoomAmount;
+
+  function draw() {
+    ctx.save();
+    const z = zoom;
+    ctx.translate(W / 2, H / 2); ctx.scale(z, z); ctx.translate(-W / 2, -H / 2);
+    ctx.clearRect(-W, -H, W * 3, H * 3);
+
+    // Sky gradient
+    const g = ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,Math.max(W,H)*0.78);
+    g.addColorStop(0, CONFIG.colors.skyNear);
+    g.addColorStop(1, CONFIG.colors.skyFar);
+    ctx.fillStyle = g; ctx.fillRect(-W, -H, W * 3, H * 3);
+
+    // Nebula glow
+    const nb = ctx.createRadialGradient(cx,cy,0,cx,cy,Math.min(W,H)*0.28);
+    nb.addColorStop(0, `rgba(${CONFIG.colors.nebulaRGB},0.12)`);
+    nb.addColorStop(0.5, `rgba(${CONFIG.colors.nebulaRGB},0.06)`);
+    nb.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = nb; ctx.fillRect(0, 0, W, H);
+
+    // BG stars
+    bg.forEach(s => {
+      const a = s.a + Math.sin(frame * s.sp + s.ph) * 0.2;
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,252,215,${a})`; ctx.fill();
+    });
+
+    // Shooting stars
+    shootTimer++;
+    if (shootTimer > CONFIG.animation.shootingStarFrequency + R(80)) {
+      shootTimer = 0;
+      const ang = Math.PI / 4 + R(Math.PI / 6), spd = R(8) + 5;
+      shoots.push({ x: R(W * 0.6), y: R(H * 0.3), vx: Math.cos(ang)*spd, vy: Math.sin(ang)*spd, len: 25+R(20), life: 35+R(20), maxLife: 55 });
+    }
+    shoots = shoots.filter(sh => {
+      sh.x += sh.vx; sh.y += sh.vy; sh.life--;
+      if (sh.life <= 0) return false;
+      const tail = Math.min(sh.len, (sh.maxLife - sh.life) * sh.len / 20);
+      const grad = ctx.createLinearGradient(sh.x, sh.y, sh.x - sh.vx*tail, sh.y - sh.vy*tail);
+      grad.addColorStop(0, 'rgba(255,250,200,0.9)');
+      grad.addColorStop(1, 'rgba(255,250,200,0)');
+      ctx.beginPath(); ctx.moveTo(sh.x, sh.y);
+      ctx.lineTo(sh.x - sh.vx*tail, sh.y - sh.vy*tail);
+      ctx.strokeStyle = grad; ctx.lineWidth = 1.5; ctx.stroke();
+      ctx.beginPath(); ctx.arc(sh.x, sh.y, 1.5, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,250,200,0.95)'; ctx.fill();
+      return true;
+    });
+
+    const prog = Math.min(frame / BUILD, 1);
+    const ledge = prog * edges.length;
+
+    // Constellation lines
+    edges.forEach(([ai,bi], i) => {
+      const p = Math.min(Math.max(ledge - i, 0), 1); if (!p) return;
+      const a = stars[ai], b = stars[bi];
+      const pulse = prog > 0.9 ? 0.22 + Math.sin(frame * 0.04 + i) * 0.08 : 0.22 * p;
+      ctx.beginPath(); ctx.moveTo(a.cx, a.cy);
+      ctx.lineTo(a.cx + (b.cx - a.cx)*p, a.cy + (b.cy - a.cy)*p);
+      ctx.strokeStyle = `rgba(240,200,100,${pulse})`;
+      ctx.lineWidth = 0.95; ctx.stroke();
+    });
+
+    // Constellation stars
+    stars.forEach((s, i) => {
+      const sp = Math.min(Math.max((frame - i*7) / 28, 0), 1); if (!sp) return;
+      const pulse = sp * (0.9 + Math.sin(frame * 0.06 + i * 0.7) * 0.1);
+      const gl = ctx.createRadialGradient(s.cx, s.cy, 0, s.cx, s.cy, s.m * 10);
+      gl.addColorStop(0, `rgba(255,235,160,${0.35 * pulse})`);
+      gl.addColorStop(1, 'rgba(255,235,160,0)');
+      ctx.beginPath(); ctx.arc(s.cx, s.cy, s.m*10, 0, Math.PI*2);
+      ctx.fillStyle = gl; ctx.fill();
+      ctx.beginPath(); ctx.arc(s.cx, s.cy, s.m*1.7, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(255,248,220,${pulse})`; ctx.fill();
+
+    });
+
+    zoom += (TARGET_ZOOM - zoom) * 0.003;
+    ctx.restore();
+    frame++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ── SCENE 3 : AURORA WARM BACKGROUND ─────────────────────────
+function initC3() {
+  const cv = document.getElementById('c3'), ctx = cv.getContext('2d');
+  fit(cv); const W = cv.width, H = cv.height;
+  let f = 0;
+  const pts = Array.from({ length: 80 }, () => ({
+    x: R(W), y: R(H), r: R(2) + 0.4,
+    vy: -(R(0.45) + 0.08), a: R(0.4) + 0.08,
+    ph: R(Math.PI * 2), sp: R(0.018) + 0.005
+  }));
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const t = f * CONFIG.animation.auroraSpeed;
+    for (let i = 0; i < 4; i++) {
+      const y = H * (0.2 + i * 0.2) + Math.sin(t + i * 1.3) * H * 0.06;
+      const col = i % 2 === 0 ? 'rgba(60,120,200,' : 'rgba(100,60,200,';
+      const band = ctx.createLinearGradient(0, y-60, 0, y+60);
+      band.addColorStop(0, col + '0)');
+      band.addColorStop(0.5, col + '0.06)');
+      band.addColorStop(1, col + '0)');
+      ctx.fillStyle = band; ctx.fillRect(0, y - 60, W, 120);
+    }
+    pts.forEach(p => {
+      p.y += p.vy; if (p.y < -5) p.y = H + 5;
+      const a = p.a + Math.sin(f * p.sp + p.ph) * 0.12;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(240,200,100,${a})`; ctx.fill();
+    });
+    f++; requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ── SCENE 4 : FIREWORKS ───────────────────────────────────────
+function initC4() {
+  const cv = document.getElementById('c4'), ctx = cv.getContext('2d');
+  fit(cv); const W = cv.width, H = cv.height;
+
+  const bg = Array.from({ length: 170 }, () => ({
+    x: R(W), y: R(H), r: R(1.5),
+    a: R(0.55) + 0.12, sp: R(0.022) + 0.005, ph: R(Math.PI * 2)
+  }));
+
+  const cols = ['#f0d080','#ff9999','#99ccff','#ffbbdd','#aaffcc','#ffffff','#ffcc66','#cc99ff'];
+  let bursts = [], burstTimer = 0, f = 0, fwIdx = 0;
+  const fwPos = [[0.5,0.45],[0.25,0.4],[0.75,0.4],[0.5,0.35],[0.35,0.5],[0.65,0.5],
+                 [0.15,0.35],[0.85,0.35],[0.4,0.3],[0.6,0.3]];
+
+  function spawnBurst(bx, by) {
+    const n = 60 + Math.floor(R(40));
+    for (let i = 0; i < n; i++) {
+      const ang = R(Math.PI * 2), spd = R(5) + 1.5;
+      bursts.push({
+        x: bx, y: by, vx: Math.cos(ang)*spd, vy: Math.sin(ang)*spd - 2.5,
+        g: 0.08, r: R(3.5) + 1.5,
+        col: cols[Math.floor(R(cols.length))],
+        a: 1, rot: R(Math.PI*2), rsp: (R(1)-0.5) * 0.2,
+        shape: R(1) > 0.5 ? 'c' : 'r'
+      });
+    }
+  }
+
+  function draw() {
+    const gr = ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,Math.max(W,H)*0.82);
+    gr.addColorStop(0, CONFIG.colors.skyNear);
+    gr.addColorStop(1, CONFIG.colors.skyFar);
+    ctx.fillStyle = gr; ctx.fillRect(0, 0, W, H);
+
+    bg.forEach(s => {
+      const a = s.a + Math.sin(f * s.sp + s.ph) * 0.2;
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,252,215,${a})`; ctx.fill();
+    });
+
+    burstTimer++;
+    if (burstTimer > CONFIG.animation.fireworkInterval && fwIdx < CONFIG.animation.fireworkCount && fwIdx < fwPos.length) {
+      burstTimer = 0;
+      const p = fwPos[fwIdx++];
+      spawnBurst(W * p[0], H * p[1]);
+    }
+
+    bursts = bursts.filter(p => {
+      p.x += p.vx; p.y += p.vy; p.vy += p.g; p.a -= 0.009; p.rot += p.rsp;
+      if (p.a <= 0) return false;
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, p.a);
+      ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+      ctx.fillStyle = p.col;
+      if (p.shape === 'c') { ctx.beginPath(); ctx.arc(0,0,p.r,0,Math.PI*2); ctx.fill(); }
+      else ctx.fillRect(-p.r, -p.r/2, p.r*2, p.r);
+      ctx.restore();
+      return true;
+    });
+
+    f++; requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ── UTILS ─────────────────────────────────────────────────────
+function fit(cv) { cv.width = window.innerWidth; cv.height = window.innerHeight; }
+function R(n) { return Math.random() * n; }
+window.addEventListener('resize', () => {
+  ['c1','c3','c4'].forEach(id => { const c = document.getElementById(id); if(c) fit(c); });
+});
+</script>
+</body>
+</html>
